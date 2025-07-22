@@ -1,0 +1,1972 @@
+---
+title: "🌱 2025 Survival Survey Dashboard"
+format: 
+  dashboard:
+    embed-resources: true
+    theme: [cosmo, custom]
+    logo: "🌱"
+    scrolling: True
+execute:
+  warning: false
+  echo: false
+---
+
+```{css}
+/* One Acre Fund Brand-Aligned CSS */
+:root {
+  /* One Acre Fund Brand Colors */
+  --oaf-primary: #2E8B57;
+  --oaf-secondary: #20B2AA;
+  --oaf-accent: #FFD700;
+  --oaf-light-green: #E8F5E8;
+  --oaf-dark-green: #1B5E20;
+  --oaf-success: #4CAF50;
+  --oaf-warning: #FF9800;
+  --oaf-danger: #F44336;
+  --oaf-info: #2196F3;
+  --oaf-light-bg: #FAFAFA;
+  --oaf-white: #FFFFFF;
+  --oaf-text-dark: #2C2C2C;
+  --oaf-text-light: #666666;
+  
+  /* Gradients */
+  --oaf-gradient-primary: linear-gradient(135deg, var(--oaf-primary) 0%, var(--oaf-secondary) 100%);
+  --oaf-gradient-accent: linear-gradient(135deg, var(--oaf-accent) 0%, #FFA726 100%);
+  --oaf-gradient-success: linear-gradient(135deg, var(--oaf-success) 0%, var(--oaf-primary) 100%);
+  --oaf-gradient-light: linear-gradient(135deg, var(--oaf-light-green) 0%, #F1F8E9 100%);
+}
+
+/* Global Styles */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--oaf-light-bg);
+  color: var(--oaf-text-dark);
+  line-height: 1.6;
+}
+
+/* Enhanced Value Boxes - Smaller and More Elegant */
+.value-box {
+  background: var(--oaf-white);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(46, 139, 87, 0.1);
+  padding: 16px !important;
+  margin: 8px !important;
+  min-height: 90px !important;
+  transition: all 0.3s ease;
+  border-left: 4px solid var(--oaf-primary);
+  position: relative;
+  overflow: hidden;
+}
+
+.value-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 40px;
+  height: 40px;
+  background: var(--oaf-gradient-light);
+  border-radius: 0 12px 0 40px;
+  opacity: 0.7;
+}
+
+.value-box:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(46, 139, 87, 0.15);
+  border-left-color: var(--oaf-accent);
+}
+
+.value-box .value-box-icon {
+  font-size: 1.8rem !important;
+  color: var(--oaf-primary);
+  margin-bottom: 8px;
+}
+
+.value-box .value-box-value {
+  font-size: 1.6rem !important;
+  font-weight: 700;
+  color: var(--oaf-text-dark);
+  margin-bottom: 4px;
+}
+
+.value-box .value-box-title {
+  font-size: 0.85rem !important;
+  color: var(--oaf-text-light);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Color variants for value boxes */
+.value-box.primary { border-left-color: var(--oaf-primary); }
+.value-box.secondary { border-left-color: var(--oaf-secondary); }
+.value-box.success { border-left-color: var(--oaf-success); }
+.value-box.warning { border-left-color: var(--oaf-warning); }
+.value-box.danger { border-left-color: var(--oaf-danger); }
+.value-box.info { border-left-color: var(--oaf-info); }
+
+/* Enhanced Cards */
+.card {
+  background: var(--oaf-white);
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(46, 139, 87, 0.08);
+  border: none;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.card:hover {
+  box-shadow: 0 4px 20px rgba(46, 139, 87, 0.12);
+  transform: translateY(-1px);
+}
+
+.card-header {
+  background: var(--oaf-gradient-light);
+  border-bottom: 2px solid var(--oaf-primary);
+  padding: 16px 20px;
+  font-weight: 600;
+  color: var(--oaf-text-dark);
+}
+
+/* Enhanced Navigation Tabs */
+.nav-tabs {
+  border-bottom: 3px solid var(--oaf-primary);
+  margin-bottom: 20px;
+}
+
+.nav-tabs .nav-link {
+  border-radius: 12px 12px 0 0;
+  margin-right: 8px;
+  padding: 12px 20px;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  color: var(--oaf-text-light);
+  border: 2px solid transparent;
+  background: var(--oaf-light-bg);
+}
+
+.nav-tabs .nav-link.active {
+  background: var(--oaf-gradient-primary);
+  color: var(--oaf-white);
+  border-color: var(--oaf-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(46, 139, 87, 0.2);
+}
+
+.nav-tabs .nav-link:hover:not(.active) {
+  background: var(--oaf-light-green);
+  color: var(--oaf-primary);
+  border-color: var(--oaf-secondary);
+  transform: translateY(-1px);
+}
+
+/* Enhanced Plotly Charts */
+.plotly {
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(46, 139, 87, 0.08);
+  background: var(--oaf-white);
+  padding: 16px;
+  margin: 12px 0;
+}
+
+/* Enhanced Tables */
+.dataTables_wrapper {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(46, 139, 87, 0.08);
+  background: var(--oaf-white);
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(46, 139, 87, 0.03);
+}
+
+.table thead th {
+  background: var(--oaf-gradient-primary);
+  color: var(--oaf-white);
+  border: none;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 0.85rem;
+}
+
+/* Enhanced Buttons */
+.btn-primary {
+  background: var(--oaf-gradient-primary);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(46, 139, 87, 0.3);
+}
+
+/* Section Headers */
+.section-header {
+  background: var(--oaf-gradient-light);
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  border-left: 5px solid var(--oaf-primary);
+}
+
+.section-title {
+  color: var(--oaf-primary);
+  font-weight: 700;
+  font-size: 1.4rem;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.section-subtitle {
+  color: var(--oaf-text-light);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+/* Progress Indicators */
+.progress {
+  height: 8px;
+  border-radius: 4px;
+  background: var(--oaf-light-green);
+}
+
+.progress-bar {
+  background: var(--oaf-gradient-primary);
+  border-radius: 4px;
+}
+
+/* Interactive Elements */
+.interactive-element {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.interactive-element:hover {
+  transform: scale(1.02);
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .value-box {
+    padding: 14px !important;
+    min-height: 85px !important;
+  }
+  
+  .value-box .value-box-value {
+    font-size: 1.4rem !important;
+  }
+  
+  .value-box .value-box-icon {
+    font-size: 1.6rem !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .value-box {
+    padding: 12px !important;
+    min-height: 80px !important;
+    margin: 6px !important;
+  }
+  
+  .value-box .value-box-value {
+    font-size: 1.2rem !important;
+  }
+  
+  .value-box .value-box-icon {
+    font-size: 1.4rem !important;
+  }
+  
+  .value-box .value-box-title {
+    font-size: 0.8rem !important;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--oaf-light-bg);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--oaf-primary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--oaf-secondary);
+}
+
+/* Loading States */
+.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* Dashboard specific styles */
+.dashboard-page {
+  background: var(--oaf-light-bg);
+}
+
+.sidebar {
+  background: var(--oaf-white);
+  border-right: 3px solid var(--oaf-primary);
+}
+
+/* Enhanced tooltips */
+.tooltip {
+  background: var(--oaf-gradient-primary);
+  color: var(--oaf-white);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  box-shadow: 0 4px 12px rgba(46, 139, 87, 0.2);
+}
+
+/* Status indicators */
+.status-excellent { color: var(--oaf-success); }
+.status-good { color: var(--oaf-warning); }
+.status-needs-improvement { color: var(--oaf-danger); }
+
+/* Metric cards */
+.metric-card {
+  background: var(--oaf-white);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(46, 139, 87, 0.08);
+  border-left: 4px solid var(--oaf-primary);
+  margin-bottom: 16px;
+}
+
+.metric-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--oaf-primary);
+  margin-bottom: 8px;
+}
+
+.metric-label {
+  font-size: 0.9rem;
+  color: var(--oaf-text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+```
+
+```{r setup}
+#| include: false
+# Enhanced package loading with One Acre Fund branding
+packages <- c(
+  "forcats", "janitor", "lubridate", "tidyverse",
+  "targets", "googlesheets4", "readr", "httr", "jsonlite",
+  "ggthemes", "plotly", "highcharter", "DT", "gt", "gtsummary",
+  "outliers", "crosstalk", "leaflet", "viridis", "scales",
+  "kableExtra", "reactable", "sparkline", "formattable", "htmltools"
+)
+
+# Load packages with error handling
+for(pkg in packages) {
+  if(!require(pkg, character.only = TRUE, quietly = TRUE)) {
+    install.packages(pkg, quiet = TRUE)
+    library(pkg, character.only = TRUE, quietly = TRUE)
+  }
+}
+
+# One Acre Fund color palette
+oaf_colors <- list(
+  primary = "#2E8B57",
+  secondary = "#20B2AA", 
+  accent = "#FFD700",
+  success = "#4CAF50",
+  warning = "#FF9800",
+  danger = "#F44336",
+  info = "#2196F3",
+  light_green = "#E8F5E8",
+  dark_green = "#1B5E20"
+)
+
+# Custom functions
+source_if_exists <- function(file) {
+  if(file.exists(file)) source(file)
+}
+source_if_exists("R/formatting.R")
+```
+
+```{r data_import}
+#| include: false
+# Configuration
+USERNAME <- "mohammed.seidhussen@oneacrefund.org"
+API_KEY <- "a749d18804539c5a2210817cda29630391a088bd"
+PROJECT_SPACE <- "oaf-ethiopia"
+FORM_ID <- "e24ab639e5b7d1b609cf2894f7057b75"
+
+# API Endpoint
+url <- paste0("https://www.commcarehq.org/a/", PROJECT_SPACE, "/api/v0.5/odata/forms/", FORM_ID, "/feed")
+
+# Enhanced data fetching with progress tracking
+limit <- 2000
+offset <- 0
+all_records <- list()
+
+while (TRUE) {
+  query <- list(limit = limit, offset = offset)
+  
+  response <- GET(url, query = query, authenticate(USERNAME, API_KEY, type = "basic"))
+  
+  if (status_code(response) != 200) {
+    cat(paste0("Error: ", status_code(response), "\n"))
+    break
+  }
+  
+  data <- fromJSON(content(response, "text"))
+  records <- data$value
+  
+  if (length(records) == 0) break
+  
+  all_records <- c(all_records, records)
+  
+  if (length(records) < limit) break
+  
+  offset <- offset + limit
+  cat(paste0("🌱 Fetched ", length(all_records), " records for One Acre Fund Ethiopia...\n"))
+}
+
+# Convert to data frame
+df <- bind_rows(all_records)
+```
+
+```{r data_cleaning}
+#| include: false
+# Enhanced data cleaning and preprocessing
+df <- df %>%
+  mutate(across(everything(), ~ na_if(., "---"))) %>%
+  # Convert list columns to character
+  mutate(across(where(is.list), ~ sapply(., function(x) if(length(x) > 0) x[1] else NA))) %>%
+  # Add date variables
+  mutate(
+    date = as.Date(completed_time),
+    started_date = as.Date(started_time),
+    week = floor_date(date, "week"),
+    month = floor_date(date, "month"),
+    hour_started = hour(started_time),
+    day_of_week = wday(date, label = TRUE),
+    is_weekend = day_of_week %in% c("Sat", "Sun")
+  ) %>%
+  # Add survey quality indicators
+  mutate(
+    duration_minutes = as.numeric(difftime(completed_time, started_time, units = "mins")),
+    is_night_survey = hour_started >= 19 | hour_started < 6,
+    is_short_survey = duration_minutes <= 5,
+    is_long_survey = duration_minutes >= 120
+  )
+
+# Filter completed surveys
+df_completed <- df %>% filter(consent == 1) |> select(-contains("arzelib"))
+```
+
+```{r summary_statistics}
+# Create comprehensive summary statistics
+survey_stats <- list(
+  total_surveys = nrow(df),
+  completed_surveys = nrow(df_completed),
+  refusal_rate = round((1-(nrow(df_completed) / nrow(df))) * 100, 1),
+  avg_duration = round(mean(df_completed$duration_minutes, na.rm = TRUE), 1),
+  unique_enumerators = length(unique(df_completed$username)),
+  date_range = paste(min(df_completed$date, na.rm = TRUE), "to", max(df_completed$date, na.rm = TRUE)),
+  quality_issues = sum(df_completed$is_short_survey | df_completed$is_night_survey, na.rm = TRUE),
+  completion_rate = round((nrow(df_completed) / nrow(df)) * 100, 1),
+  unique_locations = length(unique(paste(df_completed$site, df_completed$woreda))),
+  data_completeness = round((sum(!is.na(df_completed$farmer_name)) / nrow(df_completed)) * 100, 1)
+)
+
+# Calculate enumerator performance stats
+enumerator_stats <- df_completed %>%
+  group_by(username) %>%
+  summarise(
+    total_surveys = n(),
+    avg_daily = round(n() / n_distinct(date), 2),
+    avg_duration = round(mean(duration_minutes, na.rm = TRUE), 1),
+    short_surveys = sum(is_short_survey, na.rm = TRUE),
+    night_surveys = sum(is_night_survey, na.rm = TRUE),
+    quality_score = round(100 - (short_surveys/total_surveys * 50) - (night_surveys/total_surveys * 30), 1),
+    .groups = "drop"
+  ) %>%
+  arrange(desc(total_surveys))
+
+# Calculate survival analysis stats
+survival_rates <- df_completed %>%
+  mutate(across(c(starts_with("ps_num_planted_"), starts_with("num_surv_")),
+                as.numeric)) %>%
+  # Calculate survival rates for each species
+  mutate(
+    gesho = (num_surv_gesho / ps_num_planted_gesho) * 100,
+    dec = (num_surv_dec / ps_num_planted_dec) * 100,
+    grev = (num_surv_grev / ps_num_planted_grev) * 100,
+    moringa = (num_surv_moringa / ps_num_planted_moringa) * 100,
+    coffee = (num_surv_coffee / ps_num_planted_coffee) * 100,
+    papaya = (num_surv_papaya / ps_num_planted_papaya) * 100,
+    wanza = (num_surv_wanza / ps_num_planted_wanza) * 100
+  ) %>%
+  select(gesho, dec, grev, moringa, coffee, papaya, wanza) %>%
+  # Handle cases where planted = 0 (avoid division by zero)
+  mutate(across(everything(), ~ ifelse(is.nan(.) | is.infinite(.), 0, .))) %>%
+  # Get mean survival rate for each species
+  summarize(across(everything(), mean, na.rm = TRUE)) %>%
+  pivot_longer(everything(), names_to = "species", values_to = "survival_rate") %>%
+  arrange(desc(survival_rate))
+
+# Calculate agricultural totals
+agricultural_stats <- df_completed %>%
+  mutate(across(c(starts_with("ps_num_planted_"), starts_with("num_surv_")),
+                as.numeric)) %>%
+  summarise(
+    across(starts_with("ps_num_planted_"), sum, na.rm = TRUE, .names = "total_planted_{.col}"),
+    across(starts_with("num_surv_"), sum, na.rm = TRUE, .names = "total_survived_{.col}")
+  ) %>%
+  pivot_longer(everything()) %>%
+  mutate(
+    metric = ifelse(str_detect(name, "planted"), "planted", "survived"),
+    species = str_remove(name, "total_(planted|survived)_ps_num_planted_|total_(planted|survived)_num_surv_")
+  ) %>%
+  select(-name) %>%
+  pivot_wider(names_from = metric, values_from = value)
+
+# Merge survival rates with planted counts
+weighted_data <- agricultural_stats %>%
+  left_join(survival_rates, by = "species")
+
+# Calculate weighted average survival rate
+weighted_avg_survival <- weighted_data %>%
+  summarise(
+    weighted_avg = sum(survival_rate * planted, na.rm = TRUE) / sum(planted, na.rm = TRUE)
+  ) %>%
+  pull(weighted_avg) %>%
+  round(1)
+
+total_planted <- sum(agricultural_stats$planted, na.rm = TRUE)
+total_survived <- sum(agricultural_stats$survived, na.rm = TRUE)
+overall_survival_rate <- round((total_survived / total_planted) * 100, 1)
+```
+
+```{r survival_analysis}
+# Treatment analysis
+treatment_var <- "treatment"
+
+# Calculate species-level survival rates by treatment
+survival_rates_by_treatment <- df_completed %>%
+  mutate(across(c(starts_with("ps_num_planted_"), starts_with("num_surv_")), as.numeric)) %>%
+  filter(!is.na(!!sym(treatment_var))) %>%
+  group_by(!!sym(treatment_var)) %>%
+  mutate(
+    gesho = (num_surv_gesho / ps_num_planted_gesho) * 100,
+    dec = (num_surv_dec / ps_num_planted_dec) * 100,
+    grev = (num_surv_grev / ps_num_planted_grev) * 100,
+    moringa = (num_surv_moringa / ps_num_planted_moringa) * 100,
+    coffee = (num_surv_coffee / ps_num_planted_coffee) * 100,
+    papaya = (num_surv_papaya / ps_num_planted_papaya) * 100,
+    wanza = (num_surv_wanza / ps_num_planted_wanza) * 100
+  ) %>%
+  mutate(across(gesho:wanza, ~ ifelse(is.nan(.) | is.infinite(.), 0, .))) %>%
+  summarise(
+    across(gesho:wanza, mean, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  pivot_longer(
+    cols = -!!sym(treatment_var),
+    names_to = "species",
+    values_to = "survival_rate"
+  ) %>%
+  arrange(!!sym(treatment_var), desc(survival_rate))
+
+# Calculate weighted average survival rate by treatment
+weighted_avg_by_treatment <- df_completed %>%
+  pivot_longer(
+    cols = c(starts_with("ps_num_planted_"), starts_with("num_surv_")),
+    names_to = "metric",
+    values_to = "count"
+  ) %>%
+  mutate(
+    count = as.numeric(count),
+    type = ifelse(str_detect(metric, "planted"), "planted", "survived"),
+    species = str_remove(metric, "ps_num_planted_|num_surv_")
+  ) %>%
+  filter(!is.na(!!sym(treatment_var)) & !is.na(count)) %>%
+  group_by(!!sym(treatment_var), species, type) %>%
+  summarise(total = sum(count, na.rm = TRUE), .groups = "drop") %>%
+  pivot_wider(names_from = type, values_from = total) %>%
+  group_by(!!sym(treatment_var)) %>%
+  summarise(
+    weighted_avg_survival = sum(survived, na.rm = TRUE) / sum(planted, na.rm = TRUE) * 100,
+    .groups = "drop"
+  ) %>%
+  mutate(weighted_avg_survival = round(weighted_avg_survival, 1))
+```
+
+# 🌱 Overview
+
+## Row {height="15%"}
+
+```{r}
+#| content: valuebox
+#| title: "Total Surveys"
+
+list(
+  icon = "clipboard-data",
+  color = "primary",
+  value = format(survey_stats$completed_surveys, big.mark = ",")
+)
+```
+
+```{r}
+#| content: valuebox
+#| title: "Response Rate"
+
+list(
+  icon = "check-circle",
+  color = "success", 
+  value = paste0(survey_stats$completion_rate, "%")
+)
+```
+
+
+```{r}
+#| content: valuebox
+#| title: "Target Progress"
+
+target_progress <- round((survey_stats$completed_surveys/3600)*100, 1)
+list(
+  icon = "target",
+  color = if(target_progress >= 80) "success" else if(target_progress >= 60) "warning" else "danger",
+  value = paste0(target_progress, "%")
+)
+```
+
+
+
+```{r}
+#| content: valuebox
+#| title: "Survey Days"
+
+list(
+  icon = "calendar",
+  color = "info",
+  value = n_distinct(df_completed$date)
+)
+```
+
+
+```{r}
+#| content: valuebox
+#| title: "Weekend Surveys"
+
+weekend_surveys <- sum(df_completed$is_weekend, na.rm = TRUE)
+weekend_pct <- round((weekend_surveys / nrow(df_completed)) * 100, 1)
+list(
+  icon = "calendar-week",
+  color = if(weekend_pct <= 10) "success" else "warning",
+  value = paste0(weekend_pct, "%")
+)
+```
+
+
+## Row {height="85%"}
+
+### Column {width="60%"}
+
+```{r daily_progress_enhanced}
+# Enhanced daily progress with One Acre Fund styling
+daily_data <- df_completed %>%
+  group_by(date) %>%
+  summarise(
+    surveys = n(),
+    avg_duration = mean(duration_minutes, na.rm = TRUE),
+    quality_issues = sum(is_short_survey | is_night_survey, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  arrange(date) %>%
+  mutate(
+    cumulative = cumsum(surveys),
+    moving_avg = zoo::rollmean(surveys, k = 7, fill = NA, align = "right"),
+    target_daily = 100,
+    target_cumulative = row_number() * target_daily
+  )
+
+p1 <- plot_ly(daily_data) %>%
+  add_bars(
+    x = ~date, y = ~surveys,
+    name = "Daily Surveys",
+    marker = list(
+      color = oaf_colors$primary, 
+      opacity = 0.8,
+      line = list(color = "white", width = 1)
+    ),
+    hovertemplate = "<b>%{x}</b><br>Surveys: %{y}<br>Avg Duration: %{customdata:.1f} min<br>Quality Issues: %{meta}<extra></extra>",
+    customdata = ~avg_duration,
+    meta = ~quality_issues
+  ) %>%
+  add_lines(
+    x = ~date, y = ~moving_avg,
+    name = "7-Day Average",
+    line = list(color = oaf_colors$accent, width = 3),
+    hovertemplate = "<b>%{x}</b><br>7-Day Avg: %{y:.1f}<extra></extra>"
+  ) %>%
+  add_lines(
+    x = ~date, y = ~target_daily,
+    name = "Daily Target",
+    line = list(color = oaf_colors$danger, dash = "dash", width = 2),
+    hovertemplate = "Daily Target: %{y}<extra></extra>"
+  ) %>%
+  layout(
+    title = list(
+      text = "📈 Daily Survey Progress & Performance Trends", 
+      font = list(size = 18, color = oaf_colors$primary, family = "Segoe UI")
+    ),
+    xaxis = list(
+      title = "Date", 
+      titlefont = list(size = 14, color = oaf_colors$text_dark),
+      gridcolor = "rgba(46, 139, 87, 0.1)"
+    ),
+    yaxis = list(
+      title = "Number of Surveys", 
+      titlefont = list(size = 14, color = oaf_colors$text_dark),
+      gridcolor = "rgba(46, 139, 87, 0.1)"
+    ),
+    hovermode = "x unified",
+    plot_bgcolor = "rgba(0,0,0,0)",
+    paper_bgcolor = "rgba(0,0,0,0)",
+    font = list(family = "Segoe UI", size = 12),
+    legend = list(
+      orientation = "h",
+      x = 0.5,
+      y = 1.1,
+      xanchor = "center"
+    )
+  )
+
+p1
+```
+
+### Column {width="40%"}
+
+```{r duration_distribution}
+# Enhanced duration distribution analysis
+mean_duration <- mean(df_completed$duration_minutes, na.rm = TRUE)
+median_duration <- median(df_completed$duration_minutes, na.rm = TRUE)
+q75_duration <- quantile(df_completed$duration_minutes, 0.75, na.rm = TRUE)
+q25_duration <- quantile(df_completed$duration_minutes, 0.25, na.rm = TRUE)
+
+duration_plot <- plot_ly(df_completed, x = ~duration_minutes, type = "histogram",
+                         nbinsx = 40, name = "Survey Duration",
+                         marker = list(color = "#2E8B57", opacity = 0.7, 
+                                     line = list(color = "white", width = 1))) %>%
+  add_trace(
+    x = c(mean_duration, mean_duration),
+    y = c(0, max(hist(df_completed$duration_minutes, breaks = 40, plot = FALSE)$counts)),
+    type = "scatter",
+    mode = "lines",
+    line = list(color = "#FF6B6B", dash = "dash", width = 3),
+    name = paste0("Mean (", round(mean_duration, 1), " min)"),
+    hovertemplate = paste0("Mean: ", round(mean_duration, 1), " min<extra></extra>")
+  ) %>%
+  add_trace(
+    x = c(median_duration, median_duration),
+    y = c(0, max(hist(df_completed$duration_minutes, breaks = 40, plot = FALSE)$counts)),
+    type = "scatter",
+    mode = "lines",
+    line = list(color = "#4ECDC4", dash = "dot", width = 3),
+    name = paste0("Median (", round(median_duration, 1), " min)"),
+    hovertemplate = paste0("Median: ", round(median_duration, 1), " min<extra></extra>")
+  ) %>%
+  layout(
+    title = list(text = "📊 Survey Duration Distribution", font = list(size = 18, color = "#2E8B57")),
+    xaxis = list(title = "Duration (minutes)", titlefont = list(size = 14)),
+    yaxis = list(title = "Frequency", titlefont = list(size = 14)),
+    bargap = 0.1,
+    font = list(family = "Arial", size = 12),
+    legend = list(x = 0.7, y = 0.9)
+  )
+
+duration_plot
+```
+
+
+# 👥 Enumerator
+
+## Row {height="15%"}
+
+```{r}
+#| content: valuebox
+#| title: "Active Enumerators"
+
+list(
+  icon = "people",
+  color = "primary",
+  value = survey_stats$unique_enumerators
+)
+```
+
+```{r}
+#| content: valuebox
+#| title: "Avg Daily Output"
+
+list(
+  icon = "bar-chart",
+  color = "success",
+  value = round(mean(enumerator_stats$avg_daily, na.rm = TRUE), 1)
+)
+```
+
+```{r}
+#| content: valuebox
+#| title: "Top Performer"
+
+list(
+  icon = "trophy",
+  color = "warning",
+  value = str_trunc(enumerator_stats$username[1], 15)
+)
+```
+
+
+```{r}
+#| content: valuebox
+#| title: "Avg Duration"
+
+list(
+  icon = "clock",
+  color = "info",
+  value = paste0(survey_stats$avg_duration, " min")
+)
+```
+
+```{r}
+#| content: valuebox
+#| title: "Avg Quality Score"
+
+avg_quality <- round(mean(enumerator_stats$quality_score, na.rm = TRUE), 1)
+list(
+  icon = "star",
+  color = if(avg_quality >= 80) "success" else if(avg_quality >= 60) "warning" else "danger",
+  value = paste0(avg_quality, "%")
+)
+```
+
+```{r}
+#| content: valuebox
+#| title: "Quality Alerts"
+
+list(
+  icon = "exclamation-triangle",
+  color = "danger",
+  value = survey_stats$quality_issues
+)
+```
+
+
+## Row {height="85%"}
+
+### Column {.tabset}
+
+#### 📊 Performance
+
+```{r enumerator_performance_enhanced}
+# Enhanced enumerator performance with One Acre Fund styling
+enumerator_display <- enumerator_stats %>%
+  mutate(
+    performance_indicator = case_when(
+      quality_score >= 80 ~ "🟢 Excellent",
+      quality_score >= 60 ~ "🟡 Good", 
+      TRUE ~ "🔴 Needs Attention"
+    ),
+    quality_score_display = paste0(quality_score, "%"),
+    efficiency_score = case_when(
+      avg_daily >= 5 ~ "High",
+      avg_daily >= 3 ~ "Medium",
+      TRUE ~ "Low"
+    )
+  ) %>%
+  select(
+    Enumerator = username,
+    `Total Surveys` = total_surveys,
+    `Daily Avg` = avg_daily,
+    `Avg Duration (min)` = avg_duration,
+    `Quality Score` = quality_score_display,
+    `Efficiency` = efficiency_score,
+    Status = performance_indicator
+  )
+
+# Create enhanced interactive table with One Acre Fund styling
+enumerator_display %>%
+  DT::datatable(
+    options = list(
+      pageLength = 15,
+      scrollX = TRUE,
+      scrollY = "400px",
+      dom = 'Bfrtip',
+      buttons = list(
+        list(extend = 'copy', className = 'btn-primary'),
+        list(extend = 'csv', filename = 'oaf_enumerator_performance', className = 'btn-primary'),
+        list(extend = 'excel', filename = 'oaf_enumerator_performance', className = 'btn-primary')
+      ),
+      columnDefs = list(
+        list(className = 'dt-center', targets = c(1, 2, 3, 4, 5, 6))
+      ),
+      initComplete = JS(
+        "function(settings, json) {",
+        "$(this.api().table().header()).css({'background': 'linear-gradient(135deg, #2E8B57 0%, #20B2AA 100%)', 'color': 'white'});",
+        "}"
+      )
+    ),
+    class = "table table-striped table-hover compact",
+    caption = htmltools::tags$caption(
+      style = paste0("caption-side: top; text-align: center; color: ", oaf_colors$primary, "; font-size: 1.2em; font-weight: bold; margin-bottom: 15px; font-family: Segoe UI;"),
+      "📊 Enumerator Performance Dashboard"
+    )
+  ) %>%
+  DT::formatRound(columns = "Daily Avg", digits = 1) %>%
+  DT::formatRound(columns = "Avg Duration (min)", digits = 1) %>%
+  DT::formatStyle(
+    "Total Surveys",
+    backgroundColor = DT::styleInterval(
+      cuts = c(30, 50, 80),
+      values = c("#FFE6E6", "#FFF4E6", "#E8F5E8", "#E8F5E8")
+    ),
+    fontWeight = "bold"
+  ) %>%
+  DT::formatStyle(
+    "Status",
+    backgroundColor = DT::styleEqual(
+      c("🟢 Excellent", "🟡 Good", "🔴 Needs Attention"),
+      c("#E8F5E8", "#FFF4E6", "#FFE6E6")
+    ),
+    color = DT::styleEqual(
+      c("🟢 Excellent", "🟡 Good", "🔴 Needs Attention"),
+      c(oaf_colors$success, oaf_colors$warning, oaf_colors$danger)
+    ),
+    fontWeight = "bold"
+  ) %>%
+  DT::formatStyle(
+    "Efficiency",
+    backgroundColor = DT::styleEqual(
+      c("High", "Medium", "Low"),
+      c("#E8F5E8", "#FFF4E6", "#FFE6E6")
+    ),
+    color = DT::styleEqual(
+      c("High", "Medium", "Low"),
+      c(oaf_colors$success, oaf_colors$warning, oaf_colors$danger)
+    ),
+    fontWeight = "bold"
+  )
+```
+
+#### 🎯 Target Analysis
+
+```{r target_analysis_enhanced}
+# Enhanced target vs actual with One Acre Fund styling
+target_data <- enumerator_stats %>%
+  mutate(
+    target = 5,
+    performance_pct = (avg_daily / target) * 100,
+    status = case_when(
+      performance_pct >= 100 ~ "Above Target",
+      performance_pct >= 80 ~ "Near Target",
+      TRUE ~ "Below Target"
+    ),
+    color_code = case_when(
+      performance_pct >= 100 ~ oaf_colors$success,
+      performance_pct >= 80 ~ oaf_colors$warning,
+      TRUE ~ oaf_colors$danger
+    )
+  ) %>%
+  arrange(desc(avg_daily))
+
+target_plot <- plot_ly(target_data) %>%
+  add_bars(
+    x = ~reorder(username, avg_daily), 
+    y = ~avg_daily,
+    name = "Daily Average",
+    marker = list(
+      color = ~color_code,
+      line = list(color = "white", width = 1)
+    ),
+    text = ~paste0(round(avg_daily, 1), " surveys"),
+    textposition = "outside",
+    textfont = list(color = oaf_colors$primary, size = 10),
+    hovertemplate = "<b>%{x}</b><br>Daily Avg: %{y:.1f}<br>Performance: %{customdata:.1f}%<br>Status: %{meta}<extra></extra>",
+    customdata = ~performance_pct,
+    meta = ~status
+  ) %>%
+  add_trace(
+    x = ~username, 
+    y = rep(5, length(target_data$username)),
+    type = "scatter", 
+    mode = "lines", 
+    line = list(color = oaf_colors$danger, dash = "dash", width = 3), 
+    name = "Target: 5 surveys/day",
+    hovertemplate = "Target: 5 surveys/day<extra></extra>"
+  ) %>%
+  layout(
+    title = list(
+      text = "🎯 Daily Performance vs Target", 
+      font = list(size = 18, color = oaf_colors$primary, family = "Segoe UI")
+    ),
+    xaxis = list(
+      title = "Enumerator", 
+      tickangle = -45, 
+      titlefont = list(size = 14, color = oaf_colors$text_dark),
+      gridcolor = "rgba(46, 139, 87, 0.1)"
+    ),
+    yaxis = list(
+      title = "Average Daily Surveys", 
+      titlefont = list(size = 14, color = oaf_colors$text_dark),
+      gridcolor = "rgba(46, 139, 87, 0.1)"
+    ),
+    margin = list(b = 120, t = 60),
+    plot_bgcolor = "rgba(0,0,0,0)",
+    paper_bgcolor = "rgba(0,0,0,0)",
+    font = list(family = "Segoe UI", size = 12),
+    showlegend = TRUE,
+    legend = list(
+      orientation = "h",
+      x = 0.5,
+      y = 1.1,
+      xanchor = "center"
+    )
+  )
+
+target_plot
+```
+
+#### 📅 Productivity
+
+```{r productivity_heatmap_enhanced}
+# Enhanced productivity heatmap with One Acre Fund styling
+daily_productivity <- df_completed %>%
+  group_by(username, date) %>%
+  summarise(daily_count = n(), .groups = "drop") %>%
+  complete(username, date = seq.Date(min(date), max(date), by = "day"), 
+           fill = list(daily_count = 0))
+
+# Create enhanced heatmap
+productivity_heatmap <- daily_productivity %>%
+  plot_ly(
+    x = ~date, y = ~username, z = ~daily_count,
+    type = "heatmap",
+    colorscale = list(
+      c(0, "#FFFFFF"), 
+      c(0.2, oaf_colors$light_green), 
+      c(0.5, oaf_colors$accent), 
+      c(0.8, oaf_colors$primary),
+      c(1, oaf_colors$dark_green)
+    ),
+    hovertemplate = "<b>%{y}</b><br>Date: %{x}<br>Surveys: %{z}<br><extra></extra>",
+    showscale = TRUE,
+    colorbar = list(
+      title = "Daily Surveys",
+      titlefont = list(size = 14, color = oaf_colors$text_dark),
+      tickfont = list(size = 12)
+    )
+  ) %>%
+  layout(
+    title = list(
+      text = "📅 Enumerator Productivity Heatmap", 
+      font = list(size = 16, color = oaf_colors$primary, family = "Segoe UI")
+    ),
+    xaxis = list(
+      title = "Date", 
+      titlefont = list(size = 12, color = oaf_colors$text_dark)
+    ),
+    yaxis = list(
+      title = "Enumerator", 
+      titlefont = list(size = 12, color = oaf_colors$text_dark)
+    ),
+    margin = list(l = 120, r = 80, t = 60, b = 80),
+    font = list(family = "Segoe UI", size = 10)
+  )
+
+productivity_heatmap
+```
+
+
+#### ⚠️ Quality Alerts
+
+```{r quality_alerts}
+# Enhanced quality issues identification with better categorization
+quality_issues <- df_completed %>%
+  filter(is_short_survey | is_night_survey | duration_minutes > 120) %>%
+  mutate(
+    issue_type = case_when(
+      is_short_survey ~ "⚡ Too Short",
+      is_night_survey ~ "🌙 Night Survey", 
+      duration_minutes > 120 ~ "⏰ Too Long",
+      TRUE ~ "Other"
+    ),
+    severity = case_when(
+      is_short_survey ~ "High",
+      duration_minutes > 120 ~ "Medium",
+      is_night_survey ~ "Low",
+      TRUE ~ "Medium"
+    )
+  ) %>%
+  select(username, farmer_name, started_time, duration_minutes, issue_type, severity) %>%
+  arrange(desc(started_time))
+
+# Create enhanced quality alerts table
+quality_issues %>%
+  DT::datatable(
+    options = list(
+      pageLength = 15,
+      scrollX = TRUE,
+      scrollY = "350px",
+      dom = 'Bfrtip',
+      buttons = list(
+        'copy',
+        list(extend = 'csv', filename = 'quality_alerts'),
+        list(extend = 'excel', filename = 'quality_alerts'),
+        'print'
+      ),
+      columnDefs = list(
+        list(className = 'dt-center', targets = c(2, 3, 4, 5))
+      ),
+      initComplete = JS(
+        "function(settings, json) {",
+        "$(this.api().table().header()).css({'background-color': '#FF6B6B', 'color': 'white'});",
+        "}"
+      )
+    ),
+    class = "table table-striped table-hover compact",
+    caption = htmltools::tags$caption(
+      style = "caption-side: top; text-align: center; color: #FF6B6B; font-size: 1.2em; font-weight: bold; margin-bottom: 10px;",
+      "⚠️ Surveys Requiring Attention"
+    )
+  ) %>%
+  DT::formatRound(columns = "duration_minutes", digits = 1) %>%
+  DT::formatStyle(
+    "issue_type",
+    backgroundColor = DT::styleEqual(
+      c("⚡ Too Short", "🌙 Night Survey", "⏰ Too Long"),
+      c("#FFE6E6", "#E6E6FF", "#FFF4E6")
+    ),
+    fontWeight = "bold"
+  ) %>%
+  DT::formatStyle(
+    "severity",
+    backgroundColor = DT::styleEqual(
+      c("High", "Medium", "Low"),
+      c("#FFE6E6", "#FFF4E6", "#E6F7E6")
+    ),
+    color = DT::styleEqual(
+      c("High", "Medium", "Low"),
+      c("#D32F2F", "#F57C00", "#388E3C")
+    ),
+    fontWeight = "bold"
+  )
+```
+
+
+
+#### 🌍 Regional Performance
+
+```{r regional_performance}
+# Enhanced regional performance analysis
+regional_stats <- df_completed %>%
+  group_by(site, woreda) %>%
+  summarise(
+    total_surveys = n(),
+    avg_duration = mean(duration_minutes, na.rm = TRUE),
+    quality_issues = sum(is_short_survey | is_night_survey, na.rm = TRUE),
+    quality_score = round(100 - (quality_issues/total_surveys * 100), 1),
+    unique_enumerators = n_distinct(username),
+    avg_daily_output = round(total_surveys / n_distinct(date), 1),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    location = paste(site, "-", woreda),
+    performance_category = case_when(
+      quality_score >= 80 & avg_daily_output >= 15 ~ "High Performance",
+      quality_score >= 60 & avg_daily_output >= 10 ~ "Medium Performance",
+      TRUE ~ "Needs Improvement"
+    )
+  ) %>%
+  arrange(desc(total_surveys))
+
+regional_plot <- plot_ly(regional_stats) %>%
+  add_markers(
+    x = ~avg_daily_output, 
+    y = ~quality_score,
+    size = ~total_surveys,
+    color = ~performance_category,
+    colors = c(
+      "High Performance" = oaf_colors$success,
+      "Medium Performance" = oaf_colors$warning,
+      "Needs Improvement" = oaf_colors$danger
+    ),
+    text = ~paste0(
+      "<b>", location, "</b><br>",
+      "Total Surveys: ", total_surveys, "<br>",
+      "Quality Score: ", quality_score, "%<br>",
+      "Daily Output: ", avg_daily_output, "<br>",
+      "Enumerators: ", unique_enumerators
+    ),
+    hovertemplate = "%{text}<extra></extra>",
+    marker = list(
+      line = list(color = "white", width = 1),
+      opacity = 0.8,
+      sizemode = "diameter",
+      sizeref = max(regional_stats$total_surveys) / 100
+    )
+  ) %>%
+  layout(
+    title = list(
+      text = "🌍 Regional Performance Analysis", 
+      font = list(size = 18, color = oaf_colors$primary, family = "Segoe UI")
+    ),
+    xaxis = list(
+      title = "Average Daily Output",
+      titlefont = list(size = 14, color = oaf_colors$text_dark),
+      gridcolor = "rgba(46, 139, 87, 0.1)"
+    ),
+    yaxis = list(
+      title = "Quality Score (%)",
+      titlefont = list(size = 14, color = oaf_colors$text_dark),
+      gridcolor = "rgba(46, 139, 87, 0.1)"
+    ),
+    plot_bgcolor = "rgba(0,0,0,0)",
+    paper_bgcolor = "rgba(0,0,0,0)",
+    font = list(family = "Segoe UI", size = 12),
+    legend = list(
+      title = list(text = "<b>Performance Category</b>"),
+      orientation = "h",
+      x = 0.5,
+      y = 1.1,
+      xanchor = "center"
+    )
+  )
+
+regional_plot
+```
+
+
+
+#### 📊 Survey Quality Trends
+
+```{r quality_trends}
+# Enhanced quality trends analysis
+quality_trends <- df_completed %>%
+  group_by(date) %>%
+  summarise(
+    total_surveys = n(),
+    short_surveys = sum(is_short_survey, na.rm = TRUE),
+    night_surveys = sum(is_night_survey, na.rm = TRUE),
+    long_surveys = sum(is_long_survey, na.rm = TRUE),
+    avg_duration = mean(duration_minutes, na.rm = TRUE),
+    quality_score = 100 - ((short_surveys + night_surveys) / total_surveys * 100),
+    .groups = "drop"
+  ) %>%
+  arrange(date)
+
+quality_plot <- plot_ly(quality_trends) %>%
+  add_lines(
+    x = ~date, y = ~quality_score,
+    name = "Daily Quality Score",
+    line = list(color = oaf_colors$primary, width = 3),
+    hovertemplate = "<b>%{x}</b><br>Quality Score: %{y:.1f}%<br>Total Surveys: %{customdata}<extra></extra>",
+    customdata = ~total_surveys
+  ) %>%
+  add_bars(
+    x = ~date, y = ~short_surveys,
+    name = "Short Surveys (<5min)",
+    marker = list(color = oaf_colors$danger, opacity = 0.7),
+    yaxis = "y2",
+    hovertemplate = "<b>%{x}</b><br>Short Surveys: %{y}<extra></extra>"
+  ) %>%
+  add_bars(
+    x = ~date, y = ~night_surveys,
+    name = "Night Surveys",
+    marker = list(color = oaf_colors$warning, opacity = 0.7),
+    yaxis = "y2",
+    hovertemplate = "<b>%{x}</b><br>Night Surveys: %{y}<extra></extra>"
+  ) %>%
+  layout(
+    title = list(
+      text = "📊 Survey Quality Trends Over Time", 
+      font = list(size = 18, color = oaf_colors$primary, family = "Segoe UI")
+    ),
+    xaxis = list(
+      title = "Date",
+      titlefont = list(size = 14, color = oaf_colors$text_dark)
+    ),
+    yaxis = list(
+      title = "Quality Score (%)",
+      titlefont = list(size = 14, color = oaf_colors$text_dark),
+      side = "left",
+      range = c(0, 100)
+    ),
+    yaxis2 = list(
+      title = "Number of Issues",
+      titlefont = list(size = 14, color = oaf_colors$text_dark),
+      side = "right",
+      overlaying = "y"
+    ),
+    hovermode = "x unified",
+    plot_bgcolor = "rgba(0,0,0,0)",
+    paper_bgcolor = "rgba(0,0,0,0)",
+    font = list(family = "Segoe UI", size = 12),
+    legend = list(
+      orientation = "h",
+      x = 0.5,
+      y = 1.1,
+      xanchor = "center"
+    )
+  )
+
+quality_plot
+```
+
+
+# 🌱 Survival Analysis
+
+## Row {height="15%"}
+
+```{r}
+#| content: valuebox
+#| title: "Overall Survival Rate"
+
+list(
+  icon = "tree",
+  color = "success",
+  value = paste0(overall_survival_rate, "%")
+)
+```
+
+```{r}
+#| content: valuebox
+#| title: "Treatment Group"
+
+treatment_survival <- weighted_avg_by_treatment %>% 
+  filter(!!sym(treatment_var) == "treatment") %>% 
+  pull(weighted_avg_survival)
+
+list(
+  icon = "seedling",
+  color = "primary",
+  value = paste0(ifelse(length(treatment_survival) > 0, treatment_survival, "N/A"), "%")
+)
+```
+
+```{r}
+#| content: valuebox
+#| title: "Control Group"
+
+control_survival <- weighted_avg_by_treatment %>% 
+  filter(!!sym(treatment_var) == "control") %>% 
+  pull(weighted_avg_survival)
+
+list(
+  icon = "leaf",
+  color = "secondary",
+  value = paste0(ifelse(length(control_survival) > 0, control_survival, "N/A"), "%")
+)
+```
+
+```{r}
+#| content: valuebox
+#| title: "Best Species"
+
+list(
+  icon = "award",
+  color = "warning",
+  value = str_to_title(survival_rates$species[1])
+)
+```
+
+```{r}
+#| content: valuebox
+#| title: "Total Trees Planted"
+
+list(
+  icon = "plus-circle",
+  color = "info",
+  value = format(total_planted, big.mark = ",")
+)
+```
+
+```{r}
+#| content: valuebox
+#| title: "Trees Survived"
+
+list(
+  icon = "check-circle",
+  color = "success",
+  value = format(total_survived, big.mark = ",")
+)
+```
+
+## Row {height="85%"}
+
+### Column {.tabset}
+
+#### 🌱 Species Performance
+
+```{r survival_rates_enhanced}
+# Enhanced survival rates with One Acre Fund styling
+survival_plot <- plot_ly(survival_rates) %>%
+  add_bars(
+    x = ~reorder(species, survival_rate), 
+    y = ~survival_rate,
+    text = ~paste0(round(survival_rate, 1), "%"), 
+    textposition = "outside",
+    textfont = list(size = 12, color = oaf_colors$primary),
+    marker = list(
+      color = ~survival_rate,
+      colorscale = list(
+        c(0, oaf_colors$danger), 
+        c(0.3, oaf_colors$warning), 
+        c(0.7, oaf_colors$secondary),
+        c(1, oaf_colors$success)
+      ),
+      showscale = TRUE,
+      colorbar = list(
+        title = "Survival %", 
+        x = 1.02,
+        titlefont = list(size = 14, color = oaf_colors$text_dark),
+        tickfont = list(size = 12)
+      ),
+      line = list(color = "white", width = 1)
+    ),
+    hovertemplate = "<b>%{x}</b><br>Survival Rate: %{y:.1f}%<br>Species Performance<extra></extra>"
+  ) %>%
+  layout(
+    title = list(
+      text = "🌱 Tree Species Survival Rates - One Acre Fund Ethiopia", 
+      font = list(size = 18, color = oaf_colors$primary, family = "Segoe UI")
+    ),
+    xaxis = list(
+      title = "Tree Species", 
+      tickangle = -45, 
+      titlefont = list(size = 14, color = oaf_colors$text_dark),
+      gridcolor = "rgba(46, 139, 87, 0.1)"
+    ),
+    yaxis = list(
+      title = "Survival Rate (%)", 
+      range = c(0, 100), 
+      titlefont = list(size = 14, color = oaf_colors$text_dark),
+      gridcolor = "rgba(46, 139, 87, 0.1)"
+    ),
+    margin = list(b = 100, t = 60, r = 80),
+    plot_bgcolor = "rgba(0,0,0,0)",
+    paper_bgcolor = "rgba(0,0,0,0)",
+    font = list(family = "Segoe UI", size = 12)
+  )
+
+survival_plot
+```
+
+#### 📊 Treatment Comparison
+
+```{r treatment_comparison_enhanced}
+# Enhanced treatment comparison with One Acre Fund styling
+if(nrow(survival_rates_by_treatment) > 0) {
+  treatment_plot <- plot_ly(survival_rates_by_treatment) %>%
+    add_bars(
+      x = ~species, 
+      y = ~survival_rate,
+      color = ~get(treatment_var),
+      colors = c("control" = oaf_colors$secondary, "treatment" = oaf_colors$primary),
+      text = ~paste0(round(survival_rate, 1), "%"), 
+      textposition = "outside",
+      textfont = list(size = 10),
+      hovertemplate = ~paste(
+        "Species:", species,
+        "<br>Group:", get(treatment_var),
+        "<br>Survival Rate:", round(survival_rate, 1), "%<extra></extra>"
+      )
+    ) %>%
+    layout(
+      title = list(
+        text = "🌱 Treatment vs Control - Species Survival Comparison", 
+        font = list(size = 18, color = oaf_colors$primary, family = "Segoe UI")
+      ),
+      xaxis = list(
+        title = "Tree Species", 
+        tickangle = -45,
+        titlefont = list(size = 14, color = oaf_colors$text_dark),
+        gridcolor = "rgba(46, 139, 87, 0.1)"
+      ),
+      yaxis = list(
+        title = "Survival Rate (%)", 
+        range = c(0, 100),
+        titlefont = list(size = 14, color = oaf_colors$text_dark),
+        gridcolor = "rgba(46, 139, 87, 0.1)"
+      ),
+      barmode = "group",
+      legend = list(
+        title = list(text = "<b>Treatment Group</b>"),
+        orientation = "h",
+        x = 0.5, 
+        y = 1.1,
+        xanchor = "center"
+      ),
+      margin = list(b = 100, t = 80),
+      plot_bgcolor = "rgba(0,0,0,0)",
+      paper_bgcolor = "rgba(0,0,0,0)",
+      font = list(family = "Segoe UI", size = 12)
+    )
+} else {
+  treatment_plot <- plot_ly() %>%
+    add_text(
+      x = 0.5, y = 0.5,
+      text = "🌱 Treatment data not available<br>Please check data collection",
+      textfont = list(size = 16, color = oaf_colors$primary),
+      showlegend = FALSE
+    ) %>%
+    layout(
+      title = list(
+        text = "🌱 Treatment vs Control Comparison", 
+        font = list(size = 18, color = oaf_colors$primary, family = "Segoe UI")
+      ),
+      xaxis = list(showticklabels = FALSE),
+      yaxis = list(showticklabels = FALSE)
+    )
+}
+
+treatment_plot
+```
+
+#### 🗺️ Geographic Analysis
+
+```{r geographic_survival_enhanced}
+# Enhanced geographic analysis with One Acre Fund styling
+survival_rates_by_site <- df_completed %>%
+  mutate(across(c(starts_with("ps_num_planted_"), starts_with("num_surv_")), as.numeric)) %>%
+  filter(!is.na(site)) %>%
+  group_by(site) %>%
+  mutate(
+    gesho = (num_surv_gesho / ps_num_planted_gesho) * 100,
+    dec = (num_surv_dec / ps_num_planted_dec) * 100,
+    grev = (num_surv_grev / ps_num_planted_grev) * 100,
+    moringa = (num_surv_moringa / ps_num_planted_moringa) * 100,
+    coffee = (num_surv_coffee / ps_num_planted_coffee) * 100,
+    papaya = (num_surv_papaya / ps_num_planted_papaya) * 100,
+    wanza = (num_surv_wanza / ps_num_planted_wanza) * 100
+  ) %>%
+  mutate(across(gesho:wanza, ~ ifelse(is.nan(.) | is.infinite(.), 0, .))) %>%
+  summarise(
+    across(gesho:wanza, mean, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  pivot_longer(
+    cols = -site,
+    names_to = "species",
+    values_to = "survival_rate"
+  ) %>%
+  arrange(site, desc(survival_rate))
+
+if(nrow(survival_rates_by_site) > 0) {
+  geographic_plot <- plot_ly(survival_rates_by_site) %>%
+    add_bars(
+      x = ~species,
+      y = ~survival_rate,
+      color = ~site,
+      colors = "Set2",
+      text = ~paste0(round(survival_rate, 1), "%"),
+      textposition = "outside",
+      textfont = list(size = 9),
+      hovertemplate = ~paste(
+        "Site:", site,
+        "<br>Species:", species,
+        "<br>Survival Rate:", round(survival_rate, 1), "%<extra></extra>"
+      )
+    ) %>%
+    layout(
+      title = list(
+        text = "🗺️ Geographic Distribution - Species Survival by Site", 
+        font = list(size = 18, color = oaf_colors$primary, family = "Segoe UI")
+      ),
+      xaxis = list(
+        title = "Tree Species", 
+        tickangle = -45,
+        titlefont = list(size = 14, color = oaf_colors$text_dark)
+      ),
+      yaxis = list(
+        title = "Survival Rate (%)", 
+        range = c(0, 100),
+        titlefont = list(size = 14, color = oaf_colors$text_dark)
+      ),
+      barmode = "group",
+      legend = list(
+        title = list(text = "<b>Site Location</b>"),
+        orientation = "v",
+        x = 1.02,
+        y = 0.5
+      ),
+      margin = list(b = 100, t = 60, r = 150),
+      font = list(family = "Segoe UI", size = 11)
+    )
+} else {
+  geographic_plot <- plot_ly() %>%
+    add_text(
+      x = 0.5, y = 0.5,
+      text = "🗺️ Geographic data not available<br>Please check site information",
+      textfont = list(size = 16, color = oaf_colors$primary),
+      showlegend = FALSE
+    ) %>%
+    layout(
+      title = list(
+        text = "🗺️ Geographic Distribution", 
+        font = list(size = 18, color = oaf_colors$primary, family = "Segoe UI")
+      )
+    )
+}
+
+geographic_plot
+```
+
+
+
+#### 📈 Planting vs Survival Analysis
+
+```{r planting_survival_enhanced}
+# Enhanced scatter plot with regression line and species breakdown
+species_cols <- df_completed %>%
+  select(starts_with("ps_num_planted_"), starts_with("num_surv_")) %>%
+  names()
+
+# Check if we have any species data
+if(length(species_cols) > 0) {
+  # Extract species names
+  planted_cols <- species_cols[str_detect(species_cols, "ps_num_planted_")]
+  survived_cols <- species_cols[str_detect(species_cols, "num_surv_")]
+  
+  # Get species names
+  species_names <- str_remove(planted_cols, "ps_num_planted_")
+  
+  # Create data for each species
+  species_list <- list()
+  
+  for(species in species_names) {
+    planted_col <- paste0("ps_num_planted_", species)
+    survived_col <- paste0("num_surv_", species)
+    
+    if(planted_col %in% names(df_completed) && survived_col %in% names(df_completed)) {
+      temp_data <- df_completed %>%
+        select(all_of(c(planted_col, survived_col, "site", "woreda"))) %>%
+        mutate(
+          planted = case_when(
+            is.list(.data[[planted_col]]) ~ as.numeric(sapply(.data[[planted_col]], function(x) if(length(x) > 0) x[1] else NA)),
+            TRUE ~ as.numeric(.data[[planted_col]])
+          ),
+          survived = case_when(
+            is.list(.data[[survived_col]]) ~ as.numeric(sapply(.data[[survived_col]], function(x) if(length(x) > 0) x[1] else NA)),
+            TRUE ~ as.numeric(.data[[survived_col]])
+          ),
+          species = str_to_title(species),
+          survival_rate = round((survived / planted) * 100, 1),
+          location = paste(site, "-", woreda)
+        ) %>%
+        select(planted, survived, species, location, survival_rate) %>%
+        filter(!is.na(planted), !is.na(survived), planted > 0)
+      
+      if(nrow(temp_data) > 0) {
+        species_list[[species]] <- temp_data
+      }
+    }
+  }
+  
+  # Combine all species data
+  if(length(species_list) > 0) {
+    species_data <- bind_rows(species_list)
+    
+    # Create color palette for species
+    species_colors <- rainbow(length(unique(species_data$species)))
+    names(species_colors) <- unique(species_data$species)
+    
+    scatter_plot <- plot_ly(species_data) %>%
+      add_markers(
+        x = ~planted, y = ~survived, 
+        color = ~species,
+        colors = species_colors,
+        size = ~survival_rate, 
+        sizes = c(20, 150),
+        text = ~paste0(
+          "<b>", species, "</b><br>",
+          "Location: ", location, "<br>",
+          "Planted: ", planted, "<br>",
+          "Survived: ", survived, "<br>",
+          "Survival Rate: ", survival_rate, "%"
+        ),
+        hovertemplate = "%{text}<extra></extra>",
+        marker = list(
+          line = list(color = "white", width = 1),
+          opacity = 0.8
+        )
+      ) %>%
+      add_lines(
+        x = c(0, max(species_data$planted, na.rm = TRUE)), 
+        y = c(0, max(species_data$planted, na.rm = TRUE)),
+        line = list(dash = "dash", color = "#2E8B57", width = 3),
+        name = "Perfect Survival (100%)",
+        showlegend = TRUE,
+        hovertemplate = "Perfect Survival Line<extra></extra>"
+      ) %>%
+      layout(
+        title = list(text = "🌱 Planted vs Survived Trees by Species", font = list(size = 18, color = "#2E8B57")),
+        xaxis = list(title = "Trees Planted", titlefont = list(size = 14)),
+        yaxis = list(title = "Trees Survived", titlefont = list(size = 14)),
+        plot_bgcolor = "rgba(0,0,0,0)",
+        paper_bgcolor = "rgba(0,0,0,0)",
+        font = list(family = "Arial", size = 12),
+        legend = list(x = 0.02, y = 0.98)
+      )
+  } else {
+    # Enhanced fallback when no valid species data
+    scatter_plot <- plot_ly() %>%
+      add_text(
+        x = 0.5, y = 0.5,
+        text = "🌱 No valid planting/survival data available<br>Please check data collection",
+        textfont = list(size = 16, color = "#2E8B57"),
+        showlegend = FALSE
+      ) %>%
+      layout(
+        title = list(text = "🌱 Planted vs Survived Trees", font = list(size = 18, color = "#2E8B57")),
+        xaxis = list(title = "Trees Planted", showticklabels = FALSE, titlefont = list(size = 14)),
+        yaxis = list(title = "Trees Survived", showticklabels = FALSE, titlefont = list(size = 14))
+      )
+  }
+} else {
+  # Enhanced fallback when no species columns found
+  scatter_plot <- plot_ly() %>%
+    add_text(
+      x = 0.5, y = 0.5,
+      text = "🌱 No species data columns found<br>Please verify data structure",
+      textfont = list(size = 16, color = "#2E8B57"),
+      showlegend = FALSE
+    ) %>%
+    layout(
+      title = list(text = "🌱 Planted vs Survived Trees", font = list(size = 18, color = "#2E8B57")),
+      xaxis = list(title = "Trees Planted", showticklabels = FALSE, titlefont = list(size = 14)),
+      yaxis = list(title = "Trees Survived", showticklabels = FALSE, titlefont = list(size = 14))
+    )
+}
+
+scatter_plot
+```
+
+
+# 📋 Data Explorer
+
+```{r}
+# Enhanced interactive planting data explorer
+df_explorer <- df_completed %>%
+  # Select and rename relevant columns
+  select(
+    Date = date,
+    Enumerator = username,
+    `Farmer Name` = farmer_name,
+    Site = site,
+    Woreda = woreda,
+    starts_with("ps_num_planted_"),
+    starts_with("num_surv_")
+  ) %>%
+  # Convert to long format by species
+  pivot_longer(
+    cols = c(starts_with("ps_num_planted_"), starts_with("num_surv_")),
+    names_to = c("type", "species"),
+    names_pattern = "(planted|surv)_(.*)",
+    values_to = "count"
+  ) %>%
+  # Convert back to wide format with planted/survived columns
+  pivot_wider(
+    names_from = type,
+    values_from = count
+  ) %>%
+  # Calculate survival rate
+  mutate(
+    Species = tools::toTitleCase(species),
+    `Planted` = as.numeric(planted),
+    `Survived` = as.numeric(surv),
+    `Survival Rate` = round(Survived / Planted * 100, 1),
+    `Survival Rate` = ifelse(is.na(`Survival Rate`), 0, `Survival Rate`),
+    `Survival Group` = cut(`Survival Rate`,
+                          breaks = c(-1, 20, 50, 70, 100),
+                          labels = c("0-20%", "20-50%", "50-70%", "70-100%"))
+  ) %>%
+  select(Date, Enumerator, `Farmer Name`, Site, Woreda, Species, 
+         Planted, Survived, `Survival Rate`, `Survival Group`)
+
+# Create shared data for crosstalk
+shared_data <- SharedData$new(df_explorer)
+
+# Create enhanced filters
+filter_species <- filter_select(
+  "species", "🌱 Species", shared_data, ~Species,
+  multiple = TRUE
+)
+
+filter_survival <- filter_select(
+  "survival", "📈 Survival Group", shared_data, ~`Survival Group`,
+  multiple = TRUE
+)
+
+filter_date <- filter_slider(
+  "date", "📅 Date Range", shared_data, ~Date,
+  step = 1, animate = TRUE
+)
+
+# Create the enhanced main table
+main_table <- DT::datatable(
+  shared_data,
+  options = list(
+    pageLength = 25,
+    scrollX = TRUE,
+    scrollY = "450px",
+    dom = 'Bfrtip',
+    buttons = list(
+      list(extend = 'copy', className = 'btn-primary'),
+      list(extend = 'csv', filename = 'planting_survival_data', className = 'btn-primary'),
+      list(extend = 'excel', filename = 'planting_survival_data', className = 'btn-primary'),
+      list(extend = 'print', className = 'btn-primary')
+    ),
+    columnDefs = list(
+      list(className = 'dt-center', targets = c(0, 5, 6, 7, 8))
+    ),
+    initComplete = JS(
+      "function(settings, json) {",
+      "$(this.api().table().header()).css({'background': 'linear-gradient(135deg, #2E8B57 0%, #20B2AA 100%)', 'color': 'white'});",
+      "}"
+    )
+  ),
+  class = "table table-striped table-hover compact",
+  caption = htmltools::tags$caption(
+    style = "caption-side: top; text-align: center; color: #2E8B57; font-size: 1.3em; font-weight: bold; margin-bottom: 15px; font-family: Segoe UI;",
+    "🌱 Planting & Survival Data Explorer"
+  ),
+  rownames = FALSE
+) %>%
+  DT::formatRound(columns = "Survival Rate", digits = 1) %>%
+  DT::formatStyle(
+    "Survival Rate",
+    backgroundColor = DT::styleInterval(
+      cuts = c(20, 50, 70),
+      values = c("#FFE6E6", "#FFF4E6", "#E6F5E6", "#E6F0FF")
+    )
+  ) %>%
+  DT::formatStyle(
+    "Species",
+    color = DT::styleEqual(
+      unique(df_explorer$Species),
+      RColorBrewer::brewer.pal(length(unique(df_explorer$Species)), "Set2")
+    ),
+    fontWeight = "bold"
+  )
+
+# Enhanced layout
+div(
+  style = "margin: 20px; font-family: Segoe UI;",
+  div(
+    style = "background: #E6F5E6; padding: 20px; border-radius: 16px; margin-bottom: 20px; border-left: 5px solid #2E8B57;",
+    h3("🌱 Planting & Survival Explorer", style = "color: #2E8B57; margin-bottom: 8px; font-size: 1.4em;"),
+    p("Explore planting and survival data by species. Filter by survival rate groups to analyze performance.", 
+      style = "color: #555; margin: 0; font-size: 0.95rem;")
+  ),
+  div(
+    style = "background: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(46, 139, 87, 0.08);",
+    div(style = "display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;",
+        div(style = "background: rgba(46, 139, 87, 0.03); padding: 15px; border-radius: 8px;", filter_species),
+        div(style = "background: rgba(46, 139, 87, 0.03); padding: 15px; border-radius: 8px;", filter_survival),
+        div(style = "background: rgba(46, 139, 87, 0.03); padding: 15px; border-radius: 8px;", filter_date)
+    )
+  ),
+  main_table
+)
+```
+
+
+# 📊 Death Cause 
+
+```{r death_cause_analysis}
+# Prepare data for heatmap
+
+# List of species
+species_list <- c("gesho", "dec", "grev", "wanza", "coffee", "papaya", "moringa")
+
+# Function to process death causes (handling multiple responses)
+process_death_causes <- function(species) {
+  death_var <- paste0(species, "_death_cause")
+  
+  df_completed %>%
+    select(all_of(death_var)) %>%
+    rename("cause" = 1) %>%
+    filter(!is.na(cause)) %>%
+    separate_rows(cause, sep = " ") %>%  # Split multiple responses
+    mutate(cause = str_trim(cause)) %>%  # Clean whitespace
+    count(cause, name = "count") %>%
+    mutate(
+      percent = round(count / sum(count) * 100, 1),
+      species = species
+    ) %>%
+    arrange(desc(count))
+}
+
+# Process all species to create death_causes
+death_causes <- map_df(species_list, process_death_causes)
+
+# Create heatmap data
+heatmap_data <- death_causes %>%
+  group_by(species) %>%
+  slice_max(order_by = percent, n = 5) %>%
+  ungroup() %>%
+  mutate(
+    species = tools::toTitleCase(species),
+    cause = fct_reorder(cause, percent)
+  )
+
+# Create heatmap
+plot_ly(heatmap_data,
+        x = ~species,
+        y = ~cause,
+        z = ~percent,
+        type = "heatmap",
+        colors = colorRamp(c("#FFFFFF", "#2E8B57")),
+        hoverinfo = "text",
+        text = ~paste0(
+          "<b>", species, "</b><br>",
+          "<b>Cause:</b> ", cause, "<br>",
+          "<b>Percentage:</b> ", percent, "%"
+        )) %>%
+  layout(
+    title = "Top Death Causes by Species",
+    xaxis = list(title = ""),
+    yaxis = list(title = ""),
+    margin = list(l = 150)
+  )
+```
