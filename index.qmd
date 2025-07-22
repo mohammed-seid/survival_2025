@@ -104,6 +104,10 @@ df_processed <- df_raw %>%
 
 df_completed <- df_processed %>% filter(consent == 1)
 
+
+
+
+
 # --- Color Palette ---
 custom_colors <- list(
   primary = "#2c3e50",
@@ -118,9 +122,32 @@ custom_colors <- list(
 
 # {.tabset}
 
-## Enumerator Performance
+## Overview
 
-### Row 1 {height=30%}
+### Row 1 {height=25%}
+
+::: {.metric-card}
+<div class="metric-label">Total Species</div>
+<div class="metric-value">`r nrow(species_data)`</div>
+:::
+
+::: {.metric-card}
+<div class="metric-label">Trees Planted</div>
+<div class="metric-value">`r format_number(sum(species_data$planted))`</div>
+:::
+
+::: {.metric-card}
+<div class="metric-label">Trees Survived</div>
+<div class="metric-value">`r format_number(sum(species_data$survived))`</div>
+:::
+
+::: {.metric-card}
+<div class="metric-label">Overall Survival</div>
+<div class="metric-value">`r format_percent(sum(species_data$survived) / sum(species_data$planted))`</div>
+:::
+
+
+## Enumerator Leaderboard
 
 ::: {.card title="Enumerator Leaderboard"}
 ```{r enumerator_table}
@@ -148,12 +175,12 @@ reactable(
     weekend_surveys = colDef(name = "Weekend", align = "center"),
     completion_rate = colDef(name = "Share", align = "center", format = colFormat(percent = TRUE, digits = 1))
   ),
-  defaultPageSize = 5, searchable = TRUE, highlight = TRUE, bordered = TRUE, striped = TRUE
+  defaultPageSize = 10, searchable = TRUE, highlight = TRUE, bordered = TRUE, striped = TRUE
 )
 ```
 :::
 
-### Row 2 {height=70%}
+## Daily Productivity
 
 ::: {.card title="Daily Productivity Heatmap"}
 ```{r productivity_heatmap}
@@ -176,6 +203,8 @@ layout(
 ```
 :::
 
+## Performance Distribution
+
 ::: {.card title="Performance Distribution"}
 ```{r performance_distribution}
 plot_ly(df_completed,
@@ -191,10 +220,10 @@ plot_ly(df_completed,
 ```
 :::
 
-## Species Analysis
+## Species Survival
 
-### Row 1 {height=25%}
-```{r species_data_prep}
+::: {.card title="Tree Survival Rates by Species"}
+```{r survival_rates_plot}
 species_data <- df_completed %>%
   select(starts_with("ps_num_planted_"), starts_with("num_surv_")) %>%
   pivot_longer(everything(), names_to = "key", values_to = "value") %>%
@@ -211,32 +240,7 @@ species_data <- df_completed %>%
   ) %>%
   filter(planted > 0) %>%
   arrange(desc(survival_rate))
-```
 
-::: {.metric-card}
-<div class="metric-label">Total Species</div>
-<div class="metric-value">`r nrow(species_data)`</div>
-:::
-
-::: {.metric-card}
-<div class="metric-label">Trees Planted</div>
-<div class="metric-value">`r format_number(sum(species_data$planted))`</div>
-:::
-
-::: {.metric-card}
-<div class="metric-label">Trees Survived</div>
-<div class="metric-value">`r format_number(sum(species_data$survived))`</div>
-:::
-
-::: {.metric-card}
-<div class="metric-label">Overall Survival</div>
-<div class="metric-value">`r format_percent(sum(species_data$survived) / sum(species_data$planted))`</div>
-:::
-
-### Row 2 {height=75%}
-
-::: {.card title="Tree Survival Rates by Species"}
-```{r survival_rates_plot}
 plot_ly(species_data,
         x = ~reorder(species, survival_rate), y = ~survival_rate, type = 'bar',
         marker = list(color = ~survival_rate, colorscale = "Greens", showscale = TRUE),
@@ -249,6 +253,8 @@ plot_ly(species_data,
   )
 ```
 :::
+
+## Detailed Species Data
 
 ::: {.card title="Detailed Species Performance"}
 ```{r species_table}
