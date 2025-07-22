@@ -390,7 +390,7 @@ packages <- c(
   "targets", "googlesheets4", "readr", "httr", "jsonlite",
   "ggthemes", "plotly", "highcharter", "DT", "gt", "gtsummary",
   "outliers", "crosstalk", "leaflet", "viridis", "scales",
-  "kableExtra", "reactable", "sparkline", "formattable", "htmltools"
+  "kableExtra", "reactable", "sparkline", "formattable", "shiny", "htmltools"
 )
 
 # Load packages with error handling
