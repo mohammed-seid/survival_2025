@@ -614,7 +614,7 @@ duration_plot
 ```
 
 
-# 👥 Enumerator Performance
+# 👥 Enumerator
 
 ## Row {height="20%"}
 
@@ -942,7 +942,7 @@ quality_issues %>%
 ```
 
 
-# 🌱 Survival Analysis
+# 🌱 Survival
 
 ## Row {height="20%"}
 
