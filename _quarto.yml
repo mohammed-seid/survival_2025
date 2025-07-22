@@ -1,10 +1,9 @@
 project:
   type: website
-  output-dir: docs
 
 website:
   title: "2025 Survival Survey Dashboard"
-  navbar:
-    left:
+  sidebar:
+    contents:
       - href: survival.qmd
-        text: Home
+        text: Dashboard
