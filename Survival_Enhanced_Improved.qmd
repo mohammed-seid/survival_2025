@@ -1347,40 +1347,10 @@ if(exists("agricultural_stats") && nrow(agricultural_stats) > 0) {
 
 # 📋 Data Explorer
 
-## Row {height="20%"}
-
-::: {.value-box icon="📊" color="primary"}
-**Total Records**
-`r format(nrow(df_completed), big.mark = ",")`
-:::
-
-::: {.value-box icon="📅" color="success"}
-**Date Range**
-`r n_distinct(df_completed$date)` days
-:::
-
-::: {.value-box icon="🗺️" color="info"}
-**Unique Locations**
-`r survey_stats$unique_locations`
-:::
-
-::: {.value-box icon="✅" color="warning"}
-**Data Completeness**
-`r survey_stats$data_completeness`%
-:::
-
-::: {.value-box icon="🔍" color="secondary"}
-**Fields Available**
-`r ncol(df_completed)`
-:::
-
-## Row {height="80%"}
-
-### Column {width="100%"}
-
 ```{r data_explorer}
 # Interactive data explorer with filtering
 df_explorer <- df_completed %>%
+filter(duration_minutes < 5) %>%
   select(
     Date = date,
     Enumerator = username,
