@@ -8,10 +8,3 @@ website:
       - href: survival.qmd  # Make this the first item
         text: Home
       # Other navbar items...
-
-  # Redirect root to survival.qmd
-  pre-render: |
-    # Redirect logic for HTML output
-    if (knitr::is_html_output()) {
-      file.copy("survival.html", "index.html", overwrite = TRUE)
-    }
