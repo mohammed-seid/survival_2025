@@ -382,12 +382,13 @@ body {
 }
 ```
 
+
 ```{r setup}
 #| include: false
 # Enhanced package loading with One Acre Fund branding
 packages <- c(
   "forcats", "janitor", "lubridate", "tidyverse",
-  "targets", "googlesheets4", "readr", "httr", "jsonlite",
+  "googlesheets4", "readr", "httr", "jsonlite",
   "ggthemes", "plotly", "highcharter", "DT", "gt", "gtsummary",
   "outliers", "crosstalk", "leaflet", "viridis", "scales",
   "kableExtra", "reactable", "sparkline", "formattable", "shiny", "htmltools"
