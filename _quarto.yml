@@ -3,7 +3,15 @@ project:
 
 website:
   title: "2025 Survival Survey Dashboard"
-  sidebar:
-    contents:
-      - href: survival.qmd
-        text: Dashboard
+  navbar:
+    left:
+      - href: survival.qmd  # Make this the first item
+        text: Home
+      # Other navbar items...
+
+  # Redirect root to survival.qmd
+  pre-render: |
+    # Redirect logic for HTML output
+    if (knitr::is_html_output()) {
+      file.copy("survival.html", "index.html", overwrite = TRUE)
+    }
